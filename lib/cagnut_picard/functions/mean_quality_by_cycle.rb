@@ -7,6 +7,7 @@ module CagnutPicard
     def_delegators :'CagnutPicard.config', :mean_quality_by_cycle_params
 
     def initialize opts = {}
+      @order = sprintf '%02i', opts[:order]
       @tmp_dir = opts[:dirs][:tmp_dir]
       @job_name = "#{prefix_name}_meanQbycycle_#{sample_name}"
       @input = opts[:input].nil? ? "#{opts[:dirs][:input]}/#{sample_name}_recal.bam" : opts[:input]
@@ -52,7 +53,7 @@ module CagnutPicard
     end
 
     def generate_script
-      script_name = 'picard_meanQbycycle'
+      script_name = "#{@order}_picard_meanQbycycle"
       file = File.join jobs_dir, "#{script_name}.sh"
       File.open(file, 'w') do |f|
         f.puts <<-BASH.strip_heredoc

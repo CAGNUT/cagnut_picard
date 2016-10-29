@@ -7,6 +7,7 @@ module CagnutPicard
     def_delegators :'CagnutPicard.config', :rg_str_picard, :add_or_replace_readgroups_params
 
     def initialize opts = {}
+      @order = sprintf '%02i', opts[:order]
       @tmp_dir = opts[:dirs][:tmp_dir]
       @input = opts[:input].nil? ? "#{opts[:dirs][:input]}/#{sample_name}_aligned.sam.gz" : opts[:input]
       @output = "#{opts[:dirs][:output]}/#{sample_name}.bam"
@@ -51,7 +52,7 @@ module CagnutPicard
     end
 
     def generate_script
-      script_name = 'picard_add_or_replace_readgroups'
+      script_name = "#{@order}_picard_add_or_replace_readgroups"
       file = File.join jobs_dir, "#{script_name}.sh"
       File.open(file, 'w') do |f|
         f.puts <<-BASH.strip_heredoc

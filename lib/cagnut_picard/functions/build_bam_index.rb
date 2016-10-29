@@ -7,6 +7,7 @@ module CagnutPicard
     def_delegators :'CagnutPicard.config', :build_bam_index_params
 
     def initialize opts = {}
+      @order = sprintf '%02i', opts[:order]
       @job_name = "#{prefix_name}_build_bam_index_#{sample_name}"
       @input = opts[:input].nil? ? "#{opts[:dirs][:input]}/#{sample_name}_markdup.bam" : opts[:input]
     end
@@ -46,7 +47,7 @@ module CagnutPicard
     end
 
     def generate_script
-      script_name = 'picard_build_bam_index'
+      script_name = "#{@order}_picard_build_bam_index"
       file = File.join jobs_dir, "#{script_name}.sh"
       File.open(file, 'w') do |f|
         f.puts <<-BASH.strip_heredoc

@@ -7,6 +7,7 @@ module CagnutPicard
     def_delegators :'CagnutPicard.config', :rg_str_picard, :sort_sam_params
 
     def initialize opts = {}
+      @order = sprintf '%02i', opts[:order]
       @input = opts[:input].nil? ? "#{opts[:dirs][:input]}/#{sample_name}_mem.sam" : opts[:input]
       @output = "#{opts[:dirs][:output]}/#{sample_name}_sort.bam"
       @job_name = "#{prefix_name}_sort_sam_#{sample_name}"
@@ -47,7 +48,7 @@ module CagnutPicard
     end
 
     def generate_script
-      script_name = 'picard_sort_sam'
+      script_name = "#{@order}_picard_sort_sam"
       file = File.join jobs_dir, "#{script_name}.sh"
       File.open(file, 'w') do |f|
         f.puts <<-BASH.strip_heredoc

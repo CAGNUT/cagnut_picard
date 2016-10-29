@@ -7,6 +7,7 @@ module CagnutPicard
     def_delegators :'CagnutPicard.config', :collect_gc_bias_metrics_params
 
     def initialize opts = {}
+      @order = sprintf '%02i', opts[:order]
       @tmp_dir = opts[:dirs][:tmp_dir]
       @job_name = "#{prefix_name}_collect_gc_bias_metrics_#{sample_name}"
       @input = opts[:input].nil? ? "#{opts[:dirs][:input]}/#{sample_name}_recal.bam" : opts[:input]
@@ -55,7 +56,7 @@ module CagnutPicard
     end
 
     def generate_script
-      script_name = 'picard_collect_gc_bias_metrics'
+      script_name = "#{@order}_picard_collect_gc_bias_metrics"
       file = File.join jobs_dir, "#{script_name}.sh"
       File.open(file, 'w') do |f|
         f.puts <<-BASH.strip_heredoc

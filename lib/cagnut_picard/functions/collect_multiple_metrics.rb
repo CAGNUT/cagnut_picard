@@ -7,6 +7,7 @@ module CagnutPicard
     def_delegators :'CagnutPicard.config', :rg_str_picard, :collect_multiple_metrics_params
 
     def initialize opts = {}
+      @order = sprintf '%02i', opts[:order]
       @input = opts[:input].nil? ? "#{opts[:dirs][:input]}/#{sample_name}_recal.bam" : opts[:input]
       @output = "#{opts[:dirs][:output]}/#{sample_name}_multiple_metrics"
       @job_name = "#{prefix_name}_CollectMultipleMetrics_#{sample_name}"
@@ -51,7 +52,7 @@ module CagnutPicard
     end
 
     def generate_script
-      script_name = 'picard_collect_multiple_metrics'
+      script_name = "#{@order}_picard_collect_multiple_metrics"
       file = File.join jobs_dir, "#{script_name}.sh"
       File.open(file, 'w') do |f|
         f.puts <<-BASH.strip_heredoc
