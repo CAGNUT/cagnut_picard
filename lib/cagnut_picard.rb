@@ -12,5 +12,6 @@ module CagnutPicard
 end
 
 require 'cagnut_picard/configuration'
+require 'cagnut_picard/check_tools'
 require 'cagnut_picard/base'
 require 'cagnut_picard/util'

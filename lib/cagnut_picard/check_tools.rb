@@ -1,9 +1,9 @@
 module CagnutPicard
   module CheckTools
-    def check_tool tools_path
+    def check_tool tools_path, refs=nil
       super if defined?(super)
-      check_Picard tools_path['Picard'] if @java
-      check_picard_dict refs['ref_fasta']
+      ver = check_Picard tools_path['Picard'] if @java
+      check_picard_dict refs['ref_fasta'] if !ver.blank?
     end
 
     def check_Picard path
